@@ -1,0 +1,5 @@
+# Start the local installation of DynomoDB
+java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+
+# List DynamoDB Local Tables
+aws dynamodb list-tables --endpoint-url http://localhost:8000
