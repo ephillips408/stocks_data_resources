@@ -15,23 +15,23 @@ def create_table(local = True):
 
     if local == True:
 
-      dynamodb  =  boto3.resource(
+      dynamodb = boto3.resource(
         'dynamodb',
-        aws_access_key_id = os.environ['ACCESS_KEY_ID'],
-        aws_secret_access_key = os.environ['SECRET_ACCESS_KEY'],
+        aws_access_key_id = os.environ['LOCAL_ACCESS_KEY_ID'],
+        aws_secret_access_key = os.environ['LOCAL_SECRET_ACCESS_KEY'],
         region_name = "local",
         endpoint_url = "http://localhost:8000" # This makes sure we create the table locally
       )
     
     elif local == False:
-      dynamodb  =  boto3.resource(
+      dynamodb = boto3.resource(
         'dynamodb',
         aws_access_key_id = os.environ['ACCESS_KEY_ID'],
         aws_secret_access_key = os.environ['SECRET_ACCESS_KEY'],
         region_name = os.environ['TABLE_REGION']
       )
 
-    table_creation_resp  =  dynamodb.create_table(
+    table_creation_resp = dynamodb.create_table(
         TableName = os.environ['TABLE_NAME'],
         KeySchema = [
             {
