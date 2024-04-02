@@ -15,7 +15,7 @@ def create_s3_bucket(bucket_name: str, location: str) -> str:
     ----------
     `bucket_name:`: The name of the S3 bucket as a string that we would like to create.
 
-    `location`: The AWS region (represented as a string) that in which we would like to create the S3 bucket.
+    `location`: The AWS region (represented as a string) in which we would like to create the S3 bucket.
 
     Returns
     -------
@@ -32,7 +32,6 @@ def create_s3_bucket(bucket_name: str, location: str) -> str:
             Bucket=bucket_name,
             CreateBucketConfiguration={
                 'LocationConstraint': location  # Specify the region for the bucket
-                # You may omit this if you're creating the bucket in the default region
             }
         )
 

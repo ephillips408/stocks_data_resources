@@ -51,7 +51,26 @@ def create_table(local=True) -> str:
                 'AttributeType': 'S'  # string data type
             }
         ],
-        BillingMode='PAY_PER_REQUEST'  # Sets the billing mode to On-Demand
+        BillingMode='PAY_PER_REQUEST',  # Sets the billing mode to On-Demand
+        GlobalSecondaryIndexes=[
+            {
+                'IndexName': 'SymbolIndex',
+                'KeySchema': [
+                    {
+                        'AttributeName': 'symbol',
+                        'KeyType': 'HASH'
+                    }
+                ],
+                'Projection': {
+                    'ProjectionType': 'ALL'
+                }
+            }
+        ],
+        Tags=[
+            {
+                'project_name': 'stocks-project'
+            }
+        ]
     )
 
     return table_creation_resp
