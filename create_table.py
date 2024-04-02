@@ -51,5 +51,5 @@ def create_table(local = True):
     return table_creation_resp
 
 if __name__ == "__main__":
-    response = create_table()
+    response = create_table(local = False)
     print (response)
