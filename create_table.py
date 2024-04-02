@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def create_table(local=True) -> str:
+def create_table(table_name: str, local=True) -> str:
     """
     Creates a DynamoDB table locally for our stocks data.
 
@@ -38,7 +38,7 @@ def create_table(local=True) -> str:
         )
 
     table_creation_resp = dynamodb.create_table(
-        TableName=os.environ['TABLE_NAME'],
+        TableName=table_name,
         KeySchema=[
             {
                 'AttributeName': 'pk',
@@ -49,6 +49,10 @@ def create_table(local=True) -> str:
             {
                 'AttributeName': 'pk',
                 'AttributeType': 'S'  # string data type
+            },
+            {
+                'AttributeName': 'symbol',
+                'AttributeType': 'S'
             }
         ],
         BillingMode='PAY_PER_REQUEST',  # Sets the billing mode to On-Demand
@@ -68,7 +72,8 @@ def create_table(local=True) -> str:
         ],
         Tags=[
             {
-                'project_name': 'stocks-project'
+                'Key': 'project-name',
+                'Value': 'stocks-project'
             }
         ]
     )
@@ -77,5 +82,8 @@ def create_table(local=True) -> str:
 
 
 if __name__ == "__main__":
-    response = create_table(local=False)
+    response = create_table(
+        table_name=os.environ['TABLE_NAME'],
+        local=False
+    )
     print(response)
