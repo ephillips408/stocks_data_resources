@@ -13,9 +13,14 @@ def create_table(table_name: str, local=True) -> str:
     Defaults to a table creation on the local installation of DynamoDB for testing. To create the table in AWS,
     set the value of `local` to `False` as the function argument, i.e. `create_table(local = False)`
 
-    Parameters:
-    `local`: Determines whether we create a DynamoDB table locally or in AWS. The default value is set to `True`, so a local table will be created. 
-    To create a table in AWS, set `local = False`
+    Parameters
+    ----------
+    `table_name`: `str`
+        The name of the table we would like to create 
+
+    `local`: `bool` 
+        Determines whether we create a DynamoDB table locally or in AWS. The default value is set to `True`, so a local table will be created. 
+        To create a table in AWS, set `local = False`
     """
 
     if local == True:
