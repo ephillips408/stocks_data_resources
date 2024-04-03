@@ -6,16 +6,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def create_table(local=True):
+def create_table(table_name: str, local=True) -> str:
     """
     Creates a DynamoDB table locally for our stocks data.
 
     Defaults to a table creation on the local installation of DynamoDB for testing. To create the table in AWS,
     set the value of `local` to `False` as the function argument, i.e. `create_table(local = False)`
 
-    Parameters:
-    `local`: Determines whether we create a DynamoDB table locally or in AWS. The default value is set to `True`, so a local table will be created. 
-    To create a table in AWS, set `local = False`
+    Parameters
+    ----------
+    `table_name`: `str`
+        The name of the table we would like to create 
+
+    `local`: `bool` 
+        Determines whether we create a DynamoDB table locally or in AWS. The default value is set to `True`, so a local table will be created. 
+        To create a table in AWS, set `local = False`
     """
 
     if local == True:
@@ -38,7 +43,7 @@ def create_table(local=True):
         )
 
     table_creation_resp = dynamodb.create_table(
-        TableName=os.environ['TABLE_NAME'],
+        TableName=table_name,
         KeySchema=[
             {
                 'AttributeName': 'pk',
@@ -49,14 +54,41 @@ def create_table(local=True):
             {
                 'AttributeName': 'pk',
                 'AttributeType': 'S'  # string data type
+            },
+            {
+                'AttributeName': 'symbol',
+                'AttributeType': 'S'
             }
         ],
-        BillingMode='PAY_PER_REQUEST'  # Sets the billing mode to On-Demand
+        BillingMode='PAY_PER_REQUEST',  # Sets the billing mode to On-Demand
+        GlobalSecondaryIndexes=[
+            {
+                'IndexName': 'SymbolIndex',
+                'KeySchema': [
+                    {
+                        'AttributeName': 'symbol',
+                        'KeyType': 'HASH'
+                    }
+                ],
+                'Projection': {
+                    'ProjectionType': 'ALL'
+                }
+            }
+        ],
+        Tags=[
+            {
+                'Key': 'project-name',
+                'Value': 'stocks-project'
+            }
+        ]
     )
 
     return table_creation_resp
 
 
 if __name__ == "__main__":
-    response = create_table(local=False)
+    response = create_table(
+        table_name=os.environ['TABLE_NAME'],
+        local=False
+    )
     print(response)
