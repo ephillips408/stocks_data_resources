@@ -3,3 +3,12 @@ java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
 
 # List DynamoDB Local Tables
 aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+# Get item from DynamoDB Table
+aws dynamodb get-item --consistent-read \
+    --table-name Music \
+    --key '{ "Artist": {"S": "Acme Band"}, "SongTitle": {"S": "Happy Day"}}' \
+    --endpoint-url http://localhost:8000
+
+# Get the whole table
+aws dynamodb scan --table-name stocks-data
